@@ -16,10 +16,16 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-const formSchema = z.object({
-  emailAddress: z.string().email({ message: "Can't be empty" }),
-  password: z.string().min(8, { message: "Please check again" }),
-});
+const formSchema = z
+  .object({
+    emailAddress: z.string().email({ message: "Can't be empty" }),
+    password: z.string().min(8, { message: "Please check again" }),
+    passwordConfirm: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "Passwords do not match",
+    path: ["passwordConfirm"],
+  });
 
 export default function Home() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -27,6 +33,7 @@ export default function Home() {
     defaultValues: {
       emailAddress: "",
       password: "",
+      passwordConfirm: "",
     },
   });
 
@@ -43,9 +50,9 @@ export default function Home() {
 
         <section className="w-full rounded-xl bg-white p-10 flex flex-col gap-6">
           <div className="flex- flex-col gap-2">
-            <h1 className="text-[32px] font-bold">Login</h1>
+            <h1 className="text-[32px] font-bold">Create account</h1>
             <p className="text-[16px] text-[#737373] font-normal">
-              Add your details below to get back into the app
+              Let's get you started sharing links!
             </p>
           </div>
           <div className="flex- flex-col gap-6">
@@ -61,7 +68,7 @@ export default function Home() {
                       <FormLabel className="text-xs">Email Address</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="e.g. alex@email.com"
+                          placeholder="e.g. alex@gmail.com"
                           type="email"
                           {...field}
                           className="text-sm focus:border-none focus:!outline-[#633CFF] focus:shadow-shadowInput pl-7"
@@ -113,17 +120,51 @@ export default function Home() {
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name="passwordConfirm"
+                  render={({ field, fieldState }) => (
+                    <FormItem className="flex- flex-col gap-1 relative">
+                      <FormLabel className="text-xs">
+                        Confirm password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          {...field}
+                          className="text-sm focus:border-none focus:!outline-[#633CFF] focus:shadow-shadowInput pl-7"
+                        />
+                      </FormControl>
+                      {fieldState.error && (
+                        <FormMessage className="text-[#FF3939] absolute top-8 right-3">
+                          Passwords do not match
+                        </FormMessage>
+                      )}
+                      <Image
+                        src="/icons/lock-key.svg"
+                        width={16}
+                        height={16}
+                        alt="Confirm password input"
+                        className="top-9 left-2 absolute"
+                      />
+                    </FormItem>
+                  )}
+                />
+
+                <p className="text-xs">
+                  Password must contain at least 8 characters
+                </p>
                 <Button
                   type="submit"
                   className="w-full bg-[#633CFF] text-white active:opacity-25">
-                  Login
+                  Create new account
                 </Button>
               </form>
             </Form>
             <p className="text-sm pt-6 text-center">
-              Don't have an account?{" "}
-              <Link href="/signup" className="text-[#633CFF] sm:inline block">
-                Create account
+              Already have an account?{" "}
+              <Link href="/" className="text-[#633CFF] sm:inline block">
+                Login
               </Link>
             </p>
           </div>
