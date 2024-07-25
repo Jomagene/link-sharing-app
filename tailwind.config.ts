@@ -18,12 +18,20 @@ module.exports = {
   plugins: [
     function ({ addUtilities }) {
       const newUtilities = {
-        ".no-scrollbar::-webkit-scrollbar": {
-          display: "none",
+        ".subtle-scrollbar::-webkit-scrollbar": {
+          width: "6px",
+          height: "6px",
         },
-        ".no-scrollbar": {
-          "-ms-overflow-style": "none",
-          "scrollbar-width": "none",
+        ".subtle-scrollbar::-webkit-scrollbar-track": {
+          background: "transparent",
+        },
+        ".subtle-scrollbar::-webkit-scrollbar-thumb": {
+          background: "#eee transparent",
+          borderRadius: "10px",
+        },
+        ".subtle-scrollbar": {
+          "scrollbar-width": "thin",
+          "scrollbar-color": "#eee transparent",
         },
       };
       addUtilities(newUtilities);
