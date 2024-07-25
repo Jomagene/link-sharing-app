@@ -117,7 +117,7 @@ export default function Home() {
                       </FormControl>
                       {fieldState.error && (
                         <FormMessage className="text-[#FF3939] absolute top-8 right-3">
-                          Can't be empty
+                          Can`&apos;`t be empty
                         </FormMessage>
                       )}
                       <Image
@@ -173,7 +173,7 @@ export default function Home() {
               </form>
             </Form>
             <p className="text-sm pt-6 text-center">
-              Don't have an account?{" "}
+              Don`&apos;`t have an account?{" "}
               <Link
                 href="#"
                 onClick={handleCreateAccountClick}

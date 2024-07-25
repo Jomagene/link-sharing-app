@@ -9,9 +9,9 @@ export default function SelectSite() {
   };
 
   return (
-    <div className="w-full">
+    <div className=" flex flex-col w-full rounded-[12px] h-[228px] bg-[#FAFAFA] p-5">
       <select
-        className="custom-select h-12 flex gap-3 bg-white rounded-md text-sm w-full transition"
+        className="custom-select h-12 flex gap-3 rounded-md text-sm w-full transition"
         value={selectedValue}
         onChange={handleChange}>
         <option value="github" className="hover:!bg-[#333] h-12 border-b">

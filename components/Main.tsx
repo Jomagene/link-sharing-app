@@ -24,7 +24,7 @@ export default function Main() {
         <PhoneContent />
       </section>
       <section className="flex-[5] flex flex-col rounded-[12px] bg-white">
-        <div className="flex flex-col p-10 gap-10 h-[]">
+        <div className="flex flex-col p-10 gap-10 h-[740px]">
           <div className="flex flex-col gap-2">
             <h1 className="text-[32px] font-bold">Customize your links</h1>
             <p className="text-[16px] text-[#737373] font-normal">
@@ -32,17 +32,17 @@ export default function Main() {
               the world!
             </p>
           </div>
-          <div className="flex flex-col">
+          <div className="flex gap-6 flex-col">
             <Button
               onClick={() => setEdit(edit + 1)}
               className="text-4 h-[46px] w-full font-semibold text-[#633CFF] rounded-[8px] border border-[#633CFF] hover:bg-[#EFEBFF]">
               <Plus className="h-3 w-3" /> Add new link
             </Button>
-            <div className=" max-h-[470px] overflow-y-scroll no-scrollbar">
+            <div className="flex flex-col gap-6 max-h-[470px] overflow-y-scroll subtle-scrollbar">
               {edit ? (
                 Array(edit)
                   .fill(" ")
-                  .map((el, id) => <SelectSite key={id} />)
+                  .map((_el, id) => <SelectSite key={id} />)
               ) : (
                 <div className="flex flex-col p-5 justify-center items-center bg-[#FAFAFA] h-[469px] rounded-[12px]">
                   <div className="flex flex-col items-center gap-10 max-w-[488px]">

@@ -83,7 +83,7 @@ export default function Home() {
           <div className="flex- flex-col gap-2">
             <h1 className="text-[32px] font-bold">Create account</h1>
             <p className="text-[16px] text-[#737373] font-normal">
-              Let's get you started sharing links!
+              Let`&apos;`s get you started sharing links!
             </p>
           </div>
           <div className="flex- flex-col gap-6">
@@ -107,7 +107,7 @@ export default function Home() {
                       </FormControl>
                       {fieldState.error && (
                         <FormMessage className="text-[#FF3939] absolute top-8 right-3">
-                          Can't be empty
+                          Can`&apos;`t be empty
                         </FormMessage>
                       )}
                       <Image

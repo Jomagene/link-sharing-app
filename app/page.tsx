@@ -4,7 +4,6 @@ import Main from "@/components/Main";
 import { clientConfig, serverConfig } from "@/config";
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation"; // Use redirect for server-side redirection
 import RedirectToLogin from "./redirect-to-login";
 
 export default async function Home() {
