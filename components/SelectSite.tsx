@@ -1,61 +1,69 @@
-import React, { useState, ChangeEvent } from "react";
+//components/SelectSite.tsx
+import React, { FC, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "./ui/input";
+import Image from "next/image";
+import websites from "@/public/websites";
 
-export default function SelectSite() {
-  const [selectedValue, setSelectedValue] = useState<string>("");
+interface SelectSiteProps {
+  update: React.Dispatch<React.SetStateAction<string[]>>;
+  list: string[];
+}
 
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value);
-    console.log("Selected value:", event.target.value);
+const SelectSite: FC<SelectSiteProps> = ({ list, update }) => {
+  let [selected, setSelected] = useState("");
+
+  const handleChange = (value: string) => {
+    setSelected(value);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    let newList = [...list, selected];
+    update(newList);
   };
 
   return (
-    <div className=" flex flex-col w-full rounded-[12px] h-[228px] bg-[#FAFAFA] p-5">
-      <select
-        className="custom-select h-12 flex gap-3 rounded-md text-sm w-full transition"
-        value={selectedValue}
-        onChange={handleChange}>
-        <option value="github" className="hover:!bg-[#333] h-12 border-b">
-          Github
-        </option>
-        <option value="frontend-m" className="h-12">
-          Frontend Mentor
-        </option>
-        <option value="twitter" className="h-12">
-          Twitter
-        </option>
-        <option value="linkedin" className="h-12">
-          LinkedIn
-        </option>
-        <option value="youtube" className="h-12">
-          YouTube
-        </option>
-        <option value="facebook" className="h-12">
-          Facebook
-        </option>
-        <option value="twitch" className="h-12">
-          Twitch
-        </option>
-        <option value="devto" className="h-12">
-          Dev.to
-        </option>
-        <option value="codewars" className="h-12">
-          Codewars
-        </option>
-        <option value="codepen" className="h-12">
-          Codepen
-        </option>
-        <option value="freecodecamp" className="h-12">
-          FreeCodeCamp
-        </option>
-        <option value="gitlab" className="h-12">
-          GitLab
-        </option>
-        <option value="hashnode" className="h-12">
-          Hashnode
-        </option>
-        <option value="stackoverflow">Stack Overflow</option>
-      </select>
-      <p className="mt-2">Selected Value: {selectedValue}</p>
+    <div className="flex flex-col w-full rounded-[12px] h-[228px] bg-[#FAFAFA] p-5">
+      <Select onValueChange={handleChange}>
+        <SelectTrigger className="h-12 rounded-md text-sm w-full transition focus:border-none focus:!outline-[#633CFF] focus:shadow-shadowInput pl-7">
+          <SelectValue placeholder="Select a website" />
+        </SelectTrigger>
+        <SelectContent className="p-3 w-[95%]">
+          {websites.map((website, id) => (
+            <SelectItem
+              key={id}
+              value={website.value}
+              className="pb-3 hover:!bg-[#333] h-12 border-b">
+              {website.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <form className="relative" onSubmit={handleSubmit}>
+        <Input
+          placeholder={
+            websites.filter((website) => website.value === selected)[0]
+              ?.placeholder
+          }
+          className="text-sm focus:border-none focus:!outline-[#633CFF] focus:shadow-shadowInput pl-7"
+        />
+        <Image
+          src="/icons/enveloppe.svg"
+          width={16}
+          height={16}
+          alt="email input"
+          className="top-9 left-2 absolute"
+        />
+      </form>
     </div>
   );
-}
+};
+
+export default SelectSite;

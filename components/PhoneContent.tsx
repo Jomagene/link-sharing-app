@@ -1,12 +1,21 @@
 "use client";
+import websites from "@/public/websites";
 import Image from "next/image";
 import { useState } from "react";
 
-const PhoneContent: React.FC = () => {
+interface PhoneContentProps {
+  myList: string[];
+}
+
+const PhoneContent: React.FC<PhoneContentProps> = ({ myList }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [src, setSrc] = useState("");
-  const [links, setLinks] = useState(["", "", "", "", ""]);
+  const links = ["", "", "", "", ""];
+  const myCompleteList = myList.map((element) =>
+    websites.filter((website) => website.value == element)
+  );
+  const colors = myCompleteList.map((el) => el[0].color);
 
   return (
     <aside className="w-[237px] h-[514px] absolute flex flex-col gap-14">
@@ -22,11 +31,20 @@ const PhoneContent: React.FC = () => {
         </div>
       </section>
       <section className="flex flex-col gap-5">
-        {links.map((link, id) => (
-          <p key={id} className="w-full h-11 rounded-[8px] bg-[#EEE]">
-            {link}
-          </p>
-        ))}
+        {myList
+          ? myList.map((link, id) => (
+              <p
+                key={id}
+                className={`w-full h-11 rounded-[8px]`}
+                style={{ backgroundColor: colors[id] }}>
+                {colors[id]}
+              </p>
+            ))
+          : links.map((el, id) => (
+              <p key={id} className="w-full h-11 rounded-[8px] bg-[#EEE]">
+                {el}
+              </p>
+            ))}
       </section>
     </aside>
   );
