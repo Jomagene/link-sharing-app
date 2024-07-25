@@ -30,6 +30,8 @@ export default function Home() {
   const router = useRouter();
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [createAccountLoading, setCreateAccountLoading] =
+    useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,8 +69,15 @@ export default function Home() {
     }
   }
 
+  function handleCreateAccountClick() {
+    setCreateAccountLoading(true);
+    setTimeout(() => {
+      router.push("/register");
+    }, 1000);
+  }
+
   return (
-    <main className="flex items-center justify-center text-[#333333] h-[100vh]">
+    <main className="flex items-center justify-center text-[#333333] my-20">
       <div className="w-[476px] flex flex-col gap-[51px]">
         <section className="w-full flex items-start justify-center">
           <Image src="/icons/logo.svg" width={182} height={40} alt="logo" />
@@ -165,8 +174,15 @@ export default function Home() {
             </Form>
             <p className="text-sm pt-6 text-center">
               Don't have an account?{" "}
-              <Link href="/register" className="text-[#633CFF] sm:inline block">
-                Create account
+              <Link
+                href="#"
+                onClick={handleCreateAccountClick}
+                className="text-[#633CFF] sm:inline block">
+                {createAccountLoading ? (
+                  <LoaderCircle className="animate-spin w-5 h-5 inline-block text-[#633CFF]" />
+                ) : (
+                  "Create account"
+                )}
               </Link>
             </p>
           </div>
