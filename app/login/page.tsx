@@ -15,31 +15,57 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "@/firebase";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
-const formSchema = z
-  .object({
-    emailAddress: z.string().email({ message: "Can't be empty" }),
-    password: z.string().min(8, { message: "Please check again" }),
-    passwordConfirm: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "Passwords do not match",
-    path: ["passwordConfirm"],
-  });
+const formSchema = z.object({
+  emailAddress: z.string().email({ message: "Can't be empty" }),
+  password: z.string().min(8, { message: "Please check again" }),
+});
 
 export default function Home() {
+  const router = useRouter();
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       emailAddress: "",
       password: "",
-      passwordConfirm: "",
     },
   });
 
-  const handleSubmit = (data: {}) => {
-    console.log(data);
-  };
+  async function handleSubmit(data: {
+    emailAddress: string;
+    password: string;
+  }) {
+    setLoginError(null);
+    setLoading(true);
+    if (!data) return;
+    try {
+      const credential = await signInWithEmailAndPassword(
+        getAuth(app),
+        data.emailAddress,
+        data.password
+      );
+
+      const idToken = await credential.user.getIdToken();
+
+      await fetch("/api/login", {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+      router.push("/");
+    } catch (e) {
+      setLoginError("Your email or password is wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="flex items-center justify-center text-[#333333] h-[100vh]">
@@ -50,10 +76,16 @@ export default function Home() {
 
         <section className="w-full rounded-xl bg-white p-10 flex flex-col gap-6">
           <div className="flex- flex-col gap-2">
-            <h1 className="text-[32px] font-bold">Create account</h1>
-            <p className="text-[16px] text-[#737373] font-normal">
-              Let's get you started sharing links!
-            </p>
+            <h1 className="text-[32px] font-bold">Login</h1>
+            {loginError ? (
+              <p className="text-[16px] text-[#FF3939] font-normal">
+                {loginError}
+              </p>
+            ) : (
+              <p className="text-[16px] text-[#737373] font-normal">
+                Add your details below to get back into the app
+              </p>
+            )}
           </div>
           <div className="flex- flex-col gap-6">
             <Form {...form}>
@@ -68,7 +100,7 @@ export default function Home() {
                       <FormLabel className="text-xs">Email Address</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="e.g. alex@gmail.com"
+                          placeholder="e.g. alex@email.com"
                           type="email"
                           {...field}
                           className="text-sm focus:border-none focus:!outline-[#633CFF] focus:shadow-shadowInput pl-7"
@@ -120,51 +152,21 @@ export default function Home() {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="passwordConfirm"
-                  render={({ field, fieldState }) => (
-                    <FormItem className="flex- flex-col gap-1 relative">
-                      <FormLabel className="text-xs">
-                        Confirm password
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          {...field}
-                          className="text-sm focus:border-none focus:!outline-[#633CFF] focus:shadow-shadowInput pl-7"
-                        />
-                      </FormControl>
-                      {fieldState.error && (
-                        <FormMessage className="text-[#FF3939] absolute top-8 right-3">
-                          Passwords do not match
-                        </FormMessage>
-                      )}
-                      <Image
-                        src="/icons/lock-key.svg"
-                        width={16}
-                        height={16}
-                        alt="Confirm password input"
-                        className="top-9 left-2 absolute"
-                      />
-                    </FormItem>
-                  )}
-                />
-
-                <p className="text-xs">
-                  Password must contain at least 8 characters
-                </p>
                 <Button
                   type="submit"
-                  className="w-full bg-[#633CFF] text-white active:opacity-25">
-                  Create new account
+                  className="w-full bg-[#633CFF] text-white active:opacity-25 flex items-center justify-center">
+                  {loading ? (
+                    <LoaderCircle className="animate-spin w-5 h-5" />
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
               </form>
             </Form>
             <p className="text-sm pt-6 text-center">
-              Already have an account?{" "}
-              <Link href="/" className="text-[#633CFF] sm:inline block">
-                Login
+              Don't have an account?{" "}
+              <Link href="/register" className="text-[#633CFF] sm:inline block">
+                Create account
               </Link>
             </p>
           </div>
