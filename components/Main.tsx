@@ -1,3 +1,4 @@
+//components/Main.tsx
 "use client";
 import Image from "next/image";
 import PhoneContent from "./PhoneContent";
@@ -8,8 +9,7 @@ import SelectSite from "./SelectSite";
 
 export default function Main() {
   let [edit, setEdit] = useState(0);
-  let arr: string[] = [];
-
+  let [listSite, setListSite] = useState<string[]>([]);
   return (
     <main className="w-full flex gap-6 max-w-[1440px]  m-auto px-6 pb-6">
       <section className="flex-[4] h-[834px] rounded-[12px] bg-white xl:flex hidden items-center justify-center relative">
@@ -21,7 +21,7 @@ export default function Main() {
           alt="logo"
           className="absolute"
         />
-        <PhoneContent />
+        <PhoneContent myList={listSite} />
       </section>
       <section className="flex-[5] flex flex-col rounded-[12px] bg-white">
         <div className="flex flex-col p-10 gap-10 h-[740px]">
@@ -42,7 +42,9 @@ export default function Main() {
               {edit ? (
                 Array(edit)
                   .fill(" ")
-                  .map((_el, id) => <SelectSite key={id} />)
+                  .map((_el, id) => (
+                    <SelectSite key={id} update={setListSite} list={listSite} />
+                  ))
               ) : (
                 <div className="flex flex-col p-5 justify-center items-center bg-[#FAFAFA] h-[469px] rounded-[12px]">
                   <div className="flex flex-col items-center gap-10 max-w-[488px]">
