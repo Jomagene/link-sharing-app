@@ -1,4 +1,3 @@
-// app/register/page.tsx
 "use client";
 
 import * as z from "zod";
@@ -35,7 +34,8 @@ const formSchema = z
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false); // State for loading
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loginLoading, setLoginLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,8 +65,15 @@ export default function Home() {
     }
   }
 
+  function handleLogin() {
+    setLoginLoading(true);
+    setTimeout(() => {
+      router.push("/login");
+    }, 1000);
+  }
+
   return (
-    <main className="flex items-center justify-center text-[#333333] h-[100vh]">
+    <main className="flex items-center justify-center text-[#333333] my-20">
       <div className="w-[476px] flex flex-col gap-[51px]">
         <section className="w-full flex items-start justify-center">
           <Image src="/icons/logo.svg" width={182} height={40} alt="logo" />
@@ -191,8 +198,15 @@ export default function Home() {
             </Form>
             <p className="text-sm pt-6 text-center">
               Already have an account?{" "}
-              <Link href="/login" className="text-[#633CFF] sm:inline block">
-                Login
+              <Link
+                href="#"
+                className="text-[#633CFF] sm:inline block"
+                onClick={handleLogin}>
+                {loginLoading ? (
+                  <LoaderCircle className="animate-spin w-5 h-5 inline-block text-[#633CFF]" />
+                ) : (
+                  "Login"
+                )}
               </Link>
             </p>
           </div>
