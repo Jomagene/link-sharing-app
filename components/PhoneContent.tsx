@@ -1,5 +1,6 @@
 "use client";
 import websites from "@/public/websites";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -15,7 +16,7 @@ const PhoneContent: React.FC<PhoneContentProps> = ({ myList }) => {
   const myCompleteList = myList.map((element) =>
     websites.filter((website) => website.value == element)
   );
-  const colors = myCompleteList.map((el) => el[0].color);
+  const colors = myCompleteList.map((el) => el[0]?.color);
 
   return (
     <aside className="w-[237px] h-[514px] absolute flex flex-col gap-14">
@@ -30,15 +31,16 @@ const PhoneContent: React.FC<PhoneContentProps> = ({ myList }) => {
           <p className="h-2 w-[72px] rounded-[4px] bg-[#EEE]">{email}</p>
         </div>
       </section>
-      <section className="flex flex-col gap-5">
-        {myList
+      <section className="flex flex-col gap-5 overflow-y-scroll subtle-scrollbar ">
+        {myList[0]
           ? myList.map((link, id) => (
-              <p
+              <div
                 key={id}
-                className={`w-full h-11 rounded-[8px]`}
-                style={{ backgroundColor: colors[id] }}>
-                {colors[id]}
-              </p>
+                style={{ backgroundColor: colors[id] }}
+                className="w-full min-h-11 rounded-[8px] text-white text-[12px] flex items-center justify-between px-4">
+                <p className="leading-[44px] font-normal capitalize">{link}</p>
+                <ArrowRight className="text-white h-[11px] w-[11px]" />
+              </div>
             ))
           : links.map((el, id) => (
               <p key={id} className="w-full h-11 rounded-[8px] bg-[#EEE]">

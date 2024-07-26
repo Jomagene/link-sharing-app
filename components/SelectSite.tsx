@@ -15,10 +15,12 @@ import { Button } from "./ui/button";
 interface SelectSiteProps {
   update: React.Dispatch<React.SetStateAction<string[]>>;
   list: string[];
+  ind: number;
 }
 
-const SelectSite: FC<SelectSiteProps> = ({ list, update }) => {
+const SelectSite: FC<SelectSiteProps> = ({ list, update, ind }) => {
   let [selected, setSelected] = useState("");
+  let [deleted, setDeleted] = useState(false);
 
   const handleChange = (value: string) => {
     setSelected(value);
@@ -30,6 +32,12 @@ const SelectSite: FC<SelectSiteProps> = ({ list, update }) => {
     update(newList);
   };
 
+  const handleClick = () => {
+    setDeleted(true);
+    let newList = [...list];
+    newList.splice(ind, 1);
+    update(newList);
+  };
   return (
     <div className="flex flex-col w-full rounded-[12px] h-[228px] bg-[#FAFAFA] p-5 gap-3">
       <div className="flex justify-between items-center">
@@ -37,7 +45,9 @@ const SelectSite: FC<SelectSiteProps> = ({ list, update }) => {
           <Equal className="h-[20px]" />
           {`Link #$`}
         </h1>
-        <Button className="text-[#737373] font-normal">Remove</Button>
+        <Button className="text-[#737373] font-normal" onClick={handleClick}>
+          Remove
+        </Button>
       </div>
       <div className="flex flex-col gap-1">
         <span className="text-[12px]">Platform</span>

@@ -43,7 +43,12 @@ export default function Main() {
                 Array(edit)
                   .fill(" ")
                   .map((_el, id) => (
-                    <SelectSite key={id} update={setListSite} list={listSite} />
+                    <SelectSite
+                      key={id}
+                      ind={id}
+                      update={setListSite}
+                      list={listSite}
+                    />
                   ))
               ) : (
                 <div className="flex flex-col p-5 justify-center items-center bg-[#FAFAFA] h-[469px] rounded-[12px]">
@@ -72,9 +77,17 @@ export default function Main() {
           </div>
         </div>
         <div className="flex justify-end py-6 px-10 h-[94px] border-t w-full">
-          <Button className="text-[16px] h-[46px] w-full lg:w-[91px] font-semibold text-white  opacity-25 rounded-[8px] border bg-[#633CFF] ">
-            Save
-          </Button>
+          {edit ? (
+            <Button
+              className={`text-[16px] h-[46px] w-full lg:w-[91px] font-semibold text-white opacity-100 rounded-[8px] border bg-[#633CFF]`}>
+              Save
+            </Button>
+          ) : (
+            <Button
+              className={`text-[16px] h-[46px] w-full lg:w-[91px] font-semibold opacity-25 text-white rounded-[8px] border bg-[#633CFF]`}>
+              Save
+            </Button>
+          )}
         </div>
       </section>
     </main>
