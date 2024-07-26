@@ -51,7 +51,7 @@ let websites: {
     name: "Twitch",
     value: "twitch",
     color: "#EE3FC8",
-    placeholder: "e.g. https://www.facebook.com/",
+    placeholder: "e.g. https://www.twitch.com/",
     src: "",
   },
   {
