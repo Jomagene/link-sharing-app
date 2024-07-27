@@ -3,7 +3,15 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Link as CustomLinkIcon, CircleUserRound } from "lucide-react";
 
-export default function Header() {
+interface HeaderProps {
+  setChoiceMenu: React.Dispatch<React.SetStateAction<string>>;
+  choiceMenu: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ setChoiceMenu, choiceMenu }) => {
+  function handleChoice(a: string) {
+    setChoiceMenu(a);
+  }
   return (
     <header className="p-6 h-[126px] max-w-[1440px] m-auto">
       <div className="h-full w-full bg-white py-[16px] pl-[24px] pr-[16px] rounded-[12px]">
@@ -28,14 +36,24 @@ export default function Header() {
             <Button>
               <Link
                 href="/"
-                className="text-4 text-[#633CFF] bg-[#EFEBFF] rounded-[8px] flex items-center justify-center gap-2 h-[46px] py-[11px] px-[27px] font-semibold">
+                onClick={() => handleChoice("links")}
+                className={`text-4 rounded-[8px] flex items-center ${
+                  choiceMenu == "links"
+                    ? "text-[#633CFF] bg-[#EFEBFF]"
+                    : "text-[#737373] hover:text-[#633CFF]"
+                } justify-center gap-2 h-[46px] py-[11px] px-[27px] font-semibold`}>
                 <CustomLinkIcon className="h-5 w-5" />
                 <span className="hidden sm:block">Links</span>
               </Link>
             </Button>
             <Link
               href="/"
-              className="text-4 text-[#737373] hover:text-[#633CFF] flex items-center justify-center gap-2 h-[46px] py-[11px] px-[27px] font-semibold">
+              onClick={() => handleChoice("profile")}
+              className={`text-4 rounded-[8px] flex items-center ${
+                choiceMenu == "profile"
+                  ? "text-[#633CFF] bg-[#EFEBFF]"
+                  : "text-[#737373] hover:text-[#633CFF]"
+              } justify-center gap-2 h-[46px] py-[11px] px-[27px] font-semibold`}>
               <CircleUserRound className="h-5 w-5" />
               <span className="hidden sm:block">Profile details</span>
             </Link>
@@ -54,4 +72,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+};
+
+export default Header;

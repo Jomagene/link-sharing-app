@@ -5,6 +5,7 @@ import { clientConfig, serverConfig } from "@/config";
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
 import RedirectToLogin from "./redirect-to-login";
+import Content from "@/components/Content";
 
 export default async function Home() {
   const tokens = await getTokens(cookies(), {
@@ -20,8 +21,7 @@ export default async function Home() {
 
   return (
     <>
-      <Header />
-      <Main />
+      <Content />
     </>
   );
 }
